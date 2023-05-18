@@ -1,9 +1,12 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+
+load_dotenv()
 
 '''
-Install the required packages first: 
-Open the Terminal in PyCharm (bottom left). 
+Install the required packages first:
+Open the Terminal in PyCharm (bottom left).
 
 On Windows type:
 python -m pip install -r requirements.txt
