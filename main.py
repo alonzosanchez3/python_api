@@ -1,21 +1,10 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
+import random
 
 load_dotenv()
 
-'''
-Install the required packages first:
-Open the Terminal in PyCharm (bottom left).
-
-On Windows type:
-python -m pip install -r requirements.txt
-
-On MacOS type:
-pip3 install -r requirements.txt
-
-This will install the packages from requirements.txt for this project.
-'''
 
 app = Flask(__name__)
 
@@ -50,6 +39,12 @@ def home():
 
 
 # HTTP GET - Read Record
+@app.route('/random')
+def random():
+    cafes = db.session.execute(db.select(Cafe)).scalars().all()
+    print(cafes)
+    cafe = random.choice(cafes)
+    return render_template('index.html')
 
 # HTTP POST - Create Record
 
@@ -59,4 +54,4 @@ def home():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)
