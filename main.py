@@ -28,6 +28,13 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=True)
 
+    def to_dict(self):
+        dictionary = {}
+
+        for column in self.__table__.columns:
+            dictionary[column.name] = getattr(self, column.name)
+        return dictionary
+
 
 with app.app_context():
     db.create_all()
@@ -45,21 +52,16 @@ def random():
     print(cafes)
     random_cafe = choice(cafes)
     return jsonify(
-        cafe = {
-            "id": random_cafe.id,
-            "name": random_cafe.name,
-            "map_url": random_cafe.map_url,
-            "img_url": random_cafe.img_url,
-            "location": random_cafe.location,
-            "seats": random_cafe.seats,
-            "has_toilet": random_cafe.has_toilet,
-            "has_wifi": random_cafe.has_wifi,
-            "has_sockets": random_cafe.has_sockets,
-            "can_take_calls": random_cafe.can_take_calls,
-            "coffee_price": random_cafe.coffee_price
-        }
+        cafe = random_cafe.to_dict()
     )
     # return render_template('index.html')
+
+@app.route('/all')
+def all():
+    cafes = db.session.execute(db.select(Cafe)).scalars().all()
+    return jsonify(
+        cafes = [cafe.to_dict() for cafe in cafes]
+    )
 
 # HTTP POST - Create Record
 
