@@ -131,6 +131,8 @@ def report_closed(cafe_id):
     else:
         return jsonify(error="That cafe does not exist"), 404
 
+    #Routes done
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
